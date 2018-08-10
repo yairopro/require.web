@@ -15,14 +15,14 @@ window.require = (function(){
 		request.send(null);
 
 		// check status
-		if (request.status != 200)
+		if (request.status !== 200)
 			throw request.status;
 
 		// get content type
 		const contentType = request.getResponseHeader("Content-Type");
 
 		// JSON
-		if (contentType == "application/json")
+		if (contentType === "application/json")
 			module.exports = JSON.parse(request.responseText);
 
 		// Javascript
