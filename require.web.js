@@ -50,8 +50,8 @@ window.require = (function(){
 
 		// get stack
 		let stack = StackTrace.getSync();
-		// remove current function & stacktrace depth
-		stack = stack.slice(3);
+		// remove current function
+		stack = stack.slice(1);
 
 		// correct depth
 		if (depth < 0)
