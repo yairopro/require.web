@@ -1,0 +1,28 @@
+{
+  "name": "require.web",
+  "version": "0.0.0",
+  "description": "A NodeJS' require like function for browser.",
+  "main": "require.web.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yairopro/require.web.git"
+  },
+  "keywords": [
+    "require",
+    "import",
+    "browser",
+    "web",
+    "sync",
+    "synchronous",
+    "synchronously"
+  ],
+  "author": "Yair Behar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yairopro/require.web/issues"
+  },
+  "homepage": "https://github.com/yairopro/require.web#readme"
+}
