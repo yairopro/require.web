@@ -2,9 +2,9 @@
   "name": "require.web",
   "version": "0.0.2",
   "description": "A NodeJS' require like function for browser.",
-  "main": "require.web.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -24,5 +24,13 @@
   "bugs": {
     "url": "https://github.com/yairopro/require.web/issues"
   },
-  "homepage": "https://github.com/yairopro/require.web#readme"
+  "homepage": "https://github.com/yairopro/require.web#readme",
+  "devDependencies": {
+    "path": "^0.12.7",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0"
+  },
+  "dependencies": {
+    "to-absolute-url": "^0.0.2"
+  }
 }
