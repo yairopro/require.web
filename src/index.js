@@ -1,6 +1,6 @@
-import toAbsoluteUrl from "to-absolute-url"
+const toAbsoluteUrl = require("to-absolute-url").default;
 
-export default function require(path){
+function requireWeb(path){
 	const module = {
 		exports : {},
 		src : toAbsoluteUrl(path, 1),
@@ -30,7 +30,7 @@ export default function require(path){
 	else {
 		let js = request.responseText;
 		new Function("exports", "require", "module", '__filename', '__dirname', js)
-		(module.exports, path => require(new URL(path, module.src).href), module, module.src);
+		(module.exports, path => requireWeb(new URL(path, module.src).href), module, module.src);
 	}
 
 	// cache
@@ -40,6 +40,7 @@ export default function require(path){
 	return module.exports;
 }
 
-// place cache
-const cache = {};
-require.cache = cache;
+// cache
+const cache = requireWeb.cache = {};
+
+module.exports = requireWeb;

@@ -1,1 +1,0 @@
-window.require = require('./index.js').default; // set require function as global

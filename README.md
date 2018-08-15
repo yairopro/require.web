@@ -1,20 +1,25 @@
 # A sync `require()` function for browser.
 
-This script place a `window.require()` function which allow to to load and run js modules synchronously.
+This `require()` function allow you to to load and run js modules, or json, synchronously.
 
-##### Run:
+##### Import:
 ````
-<script src="require.web.js"></script>
-// or
-import "require.web.js"
+// global using script tag
+<script src="./dist/require-global.web.js"></script>
+
+// ES6 module
+import require from "./dist/require-module.web.js"
+
+// or npm module in case you use webpack
+const requireWeb = require("require.web");
 ````
 
 
 ##### Use:
 ````
 let myModule = require("./myModule.js");
-let Algolia = window.require("https://cdn.jsdelivr.net/npm/algoliasearch@3.30.0/dist/algoliasearch.min.js");
-let StackTrace = window.require("https://cdn.jsdelivr.net/npm/stacktrace-js@2.0.0/dist/stacktrace.min.js");
+let Algolia = require("https://cdn.jsdelivr.net/npm/algoliasearch@3.30.0/dist/algoliasearch.min.js");
+let StackTrace = require("https://cdn.jsdelivr.net/npm/stacktrace-js@2.0.0/dist/stacktrace.min.js");
 ````
 
 ##### Warning
