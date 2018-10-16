@@ -17,15 +17,16 @@
 		<script src="../dist/require-global.web.js"></script>
 	</head>
 
-	<body>
+	<body style="font-family: 'Courier New';">
 		<img src="../res/dependencies.png" style="display: block; width: 100%; margin-bottom: 20px;">
 
-		<div id="console" style="border: 1px solid black; background: #ececec; font-family: 'Courier New'; padding: 10px;">
+		<h2>Console</h2>
+		<div id="console" style="border: 1px solid black; background: #ececec; padding: 10px;">
 			<script>
 				require.verbose = true;
 				consoleView = document.getElementById("console");
 				function log(message){
-					consoleView.innerHTML += `<div>${message}</div>`;
+					consoleView.innerHTML += `<li>${message}</li>`;
 				}
 			</script>
 		</div>

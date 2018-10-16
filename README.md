@@ -32,6 +32,9 @@ require.verbose = true;
 require.resolve("./myModule.js"); // https://domain.com/path/to/myModule.js
 ````
 
+##### Test:
+Open `test/index.html` in your browser to test.
+
 ##### Warning
 Since the function is for browser only, you must specify the relative/absolute path to the module's file you wish to load.
 You can't load modules from `node_modules` folder with only module's name like Node does.
