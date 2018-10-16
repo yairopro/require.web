@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>require.web</title>
+		<style>
+			.code {
+				background: #ececec;
+				font-size: 13px;
+				display: inline-block;
+				padding: 2px;
+			}
+		</style>
+
+
+		<!--Import the module globally here-->
+		<script src="../dist/require-global.web.js"></script>
+	</head>
+
+	<body>
+		<img src="../res/dependencies.png" style="display: block; width: 100%; margin-bottom: 20px;">
+
+		<div id="console" style="border: 1px solid black; background: #ececec; font-family: 'Courier New'; padding: 10px;">
+			<script>
+				require.verbose = true;
+				consoleView = document.getElementById("console");
+				function log(message){
+					consoleView.innerHTML += `<div>${message}</div>`;
+				}
+			</script>
+		</div>
+	</body>
+
+	<script src="index.js"></script>
+</html>

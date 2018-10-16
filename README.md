@@ -17,9 +17,19 @@ const requireWeb = require("require.web");
 
 ##### Use:
 ````
+// Using absolute url
+let Stacktrace = require("https://cdn.jsdelivr.net/npm/stacktrace-js@2.0.0/dist/stacktrace.min.js");
+
+// Using relative path (doesn't work in console)
 let myModule = require("./myModule.js");
-let Algolia = require("https://cdn.jsdelivr.net/npm/algoliasearch@3.30.0/dist/algoliasearch.min.js");
-let StackTrace = require("https://cdn.jsdelivr.net/npm/stacktrace-js@2.0.0/dist/stacktrace.min.js");
+````
+Other uses:
+````
+// Verbose mode will log imported paths
+require.verbose = true;
+
+// Resolve relative path to absolute url. Doesn't work in console.
+require.resolve("./myModule.js"); // https://domain.com/path/to/myModule.js
 ````
 
 ##### Warning

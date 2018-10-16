@@ -1529,14 +1529,24 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 const toAbsoluteUrl = __webpack_require__(7).default;
 
 function requireWeb(path){
+	if (requireWeb.verbose)
+		console.log(`require( ${path} )`);
+
 	const module = {
 		exports : {},
 		src : toAbsoluteUrl(path, 1),
 	};
 
+	if (requireWeb.verbose && path !== module.src)
+		console.log(`${path} -> ${module.src}`);
+
 	// check cache
-	if (cache[module.src])
+	if (cache[module.src]){
+		if (requireWeb.verbose)
+			console.log(`${path}  found in cache`);
+
 		return cache[module.src];
+	}
 
 	// send request
 	const request = new XMLHttpRequest();
@@ -1544,8 +1554,11 @@ function requireWeb(path){
 	request.send(null);
 
 	// check status
-	if (request.status !== 200)
-		throw request.status;
+	if (request.status !== 200) {
+		let error = new Error(`Error loading ${path}`, module.src);
+		error.code = request.status;
+		throw error;
+	}
 
 	// get content type
 	const contentType = request.getResponseHeader("Content-Type");
@@ -1557,8 +1570,16 @@ function requireWeb(path){
 	// Javascript
 	else {
 		let js = request.responseText;
+
+		let subRequire = path => requireWeb(new URL(path, module.src).href);
+		setRequireProperties(subRequire, module.src);
+
+
+		if (requireWeb.verbose)
+			console.log(`Starting running ${path}`);
+
 		new Function("exports", "require", "module", '__filename', '__dirname', js)
-		(module.exports, path => requireWeb(new URL(path, module.src).href), module, module.src);
+		(module.exports, subRequire, module, module.src);
 	}
 
 	// cache
@@ -1569,9 +1590,23 @@ function requireWeb(path){
 }
 
 // cache
-const cache = requireWeb.cache = {};
+const cache = {};
 
+// require static properties
+function setRequireProperties(requireFunction, from){
+	requireFunction.resolve = !from ? toAbsoluteUrl :  path => new URL(path, from).href;
+	requireFunction.cache = !from ? cache : new Proxy(cache, {
+		// resolve relative path to absolute url
+		get : (cache, path) => cache[requireFunction.resolve(path)]
+	});
+}
+
+// set properties on root require function
+setRequireProperties(requireWeb);
+
+// export
 module.exports = requireWeb;
+
 
 /***/ }),
 /* 7 */
@@ -1579,23 +1614,35 @@ module.exports = requireWeb;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return toAbsoluteUrl; });
 /* harmony import */ var stacktrace_js_stacktrace_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
 /* harmony import */ var stacktrace_js_stacktrace_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(stacktrace_js_stacktrace_js__WEBPACK_IMPORTED_MODULE_0__);
 
+
+let numberOfFramesToRemove = 0;
 
 /**
  * @param {String?} path Relative path.
  * @param {Number} [depth=0] Depth in the stacktrace.
  * @returns {string} The absolute url of the current running code.
  */
-/* harmony default export */ __webpack_exports__["default"] = (function (path, depth) {
+function toAbsoluteUrl(path, depth) {
 	// default depth
 	depth = depth || 0;
 
 	// get stack
 	let stack = stacktrace_js_stacktrace_js__WEBPACK_IMPORTED_MODULE_0___default.a.getSync();
+
+	if (!numberOfFramesToRemove) {
+		let found;
+		do {
+			found = (stack[numberOfFramesToRemove].functionName === currentFunction.name);
+			numberOfFramesToRemove++;
+		} while (numberOfFramesToRemove < stack.length && !found)
+	}
+
 	// remove current function & stacktrace depth
-	stack = stack.slice(1);
+	stack = stack.slice(numberOfFramesToRemove);
 
 	// correct depth
 	if (depth < 0)
@@ -1610,7 +1657,9 @@ __webpack_require__.r(__webpack_exports__);
 		absolute = new URL(path, absolute).href;
 	// return absolute path
 	return absolute;
-});
+};
+
+const currentFunction = toAbsoluteUrl;
 
 
 /***/ }),

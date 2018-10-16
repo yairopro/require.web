@@ -1,14 +1,24 @@
 const toAbsoluteUrl = require("to-absolute-url").default;
 
 function requireWeb(path){
+	if (requireWeb.verbose)
+		console.log(`require( ${path} )`);
+
 	const module = {
 		exports : {},
 		src : toAbsoluteUrl(path, 1),
 	};
 
+	if (requireWeb.verbose && path !== module.src)
+		console.log(`${path} -> ${module.src}`);
+
 	// check cache
-	if (cache[module.src])
+	if (cache[module.src]){
+		if (requireWeb.verbose)
+			console.log(`${path}  found in cache`);
+
 		return cache[module.src];
+	}
 
 	// send request
 	const request = new XMLHttpRequest();
@@ -16,8 +26,11 @@ function requireWeb(path){
 	request.send(null);
 
 	// check status
-	if (request.status !== 200)
-		throw request.status;
+	if (request.status !== 200) {
+		let error = new Error(`Error loading ${path}`, module.src);
+		error.code = request.status;
+		throw error;
+	}
 
 	// get content type
 	const contentType = request.getResponseHeader("Content-Type");
@@ -29,8 +42,16 @@ function requireWeb(path){
 	// Javascript
 	else {
 		let js = request.responseText;
+
+		let subRequire = path => requireWeb(new URL(path, module.src).href);
+		setRequireProperties(subRequire, module.src);
+
+
+		if (requireWeb.verbose)
+			console.log(`Starting running ${path}`);
+
 		new Function("exports", "require", "module", '__filename', '__dirname', js)
-		(module.exports, path => requireWeb(new URL(path, module.src).href), module, module.src);
+		(module.exports, subRequire, module, module.src);
 	}
 
 	// cache
@@ -41,6 +62,19 @@ function requireWeb(path){
 }
 
 // cache
-const cache = requireWeb.cache = {};
+const cache = {};
 
+// require static properties
+function setRequireProperties(requireFunction, from){
+	requireFunction.resolve = !from ? toAbsoluteUrl :  path => new URL(path, from).href;
+	requireFunction.cache = !from ? cache : new Proxy(cache, {
+		// resolve relative path to absolute url
+		get : (cache, path) => cache[requireFunction.resolve(path)]
+	});
+}
+
+// set properties on root require function
+setRequireProperties(requireWeb);
+
+// export
 module.exports = requireWeb;
