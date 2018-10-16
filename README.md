@@ -33,7 +33,7 @@ require.resolve("./myModule.js"); // https://domain.com/path/to/myModule.js
 ````
 
 ##### Test:
-Open `test/index.html` in your browser to test.
+Open `test/index.html` in your browser to test. Here's its [require graph](https://docs.google.com/drawings/d/19vAvPz4lwgHiKK0g0oBHK8KIdpQTPxLvw8akm39LUFI/edit?usp=sharing).
 
 ##### Warning
 Since the function is for browser only, you must specify the relative/absolute path to the module's file you wish to load.
