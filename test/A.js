@@ -1,6 +1,6 @@
 // importing B
 log("Requiring B from A");
-let B = require("./B.js");
+let B = require("./B.js").default;
 
 if (B === true)
 	log("B successfully imported");

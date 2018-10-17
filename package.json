@@ -1,11 +1,12 @@
 {
 	"name": "require.web",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"description": "A NodeJS' require like function for browser.",
 	"main": "src/index.js",
 	"scripts": {
-		"build": "webpack",
-		"save" : "git add . && git commit && git push"
+		"test": "webpack  --mode=development",
+		"build": "webpack --mode=production",
+		"save": "git add . && git commit && git push"
 	},
 	"repository": {
 		"type": "git",
@@ -33,6 +34,7 @@
 		"webpack-cli": "^3.1.0"
 	},
 	"dependencies": {
+		"@babel/standalone": "^7.1.0",
 		"to-absolute-url": "0.0.x"
 	}
 }

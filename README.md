@@ -40,6 +40,6 @@ Since the function is for browser only, you must specify the relative/absolute p
 You can't load modules from `node_modules` folder with only module's name like Node does.
 Because it doesn't know the architecture of your files & folders to know where your modules' files are. It's web dude.
 
-##### Missing:
-- Debug imported module in debugger.
-- Import ES6 modules.
+##### Features:
+- [x] Import ES6 modules.
+- [ ] Debug required module in debugger.

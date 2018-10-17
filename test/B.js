@@ -10,4 +10,4 @@ if (D === true)
 else
 	log("D was not imported properly");
 
-module.exports = D;
+export default D;

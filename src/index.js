@@ -1,4 +1,5 @@
 const toAbsoluteUrl = require("to-absolute-url").default;
+const Babel = require("@babel/standalone");
 
 function requireWeb(path){
 	if (requireWeb.verbose)
@@ -41,7 +42,7 @@ function requireWeb(path){
 
 	// Javascript
 	else {
-		let js = request.responseText;
+		let js = Babel.transform(request.responseText, { presets: ['es2015'] }).code;
 
 		let subRequire = path => requireWeb(new URL(path, module.src).href);
 		setRequireProperties(subRequire, module.src);
