@@ -18,7 +18,7 @@ const requireWeb = require("require.web");
 ##### Use:
 ````
 // Using absolute url
-let Stacktrace = require("https://cdn.jsdelivr.net/npm/stacktrace-js@2.0.0/dist/stacktrace.min.js");
+let myModule = require("https://scdn.com/my-module");
 
 // Using relative path (doesn't work in console)
 let myModule = require("./myModule.js");
